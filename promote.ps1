@@ -37,4 +37,8 @@ docker login $server -u $($env:DOCKER_USER) -p $($env:DOCKER_PASS)
 docker push $releaseImage
 #docker push $latestImage
 
+if ($LastExitCode -ne 0 ) {
+  exit 1
+}
+
 Write-Host "Production image was successfully pushed to docker registry"

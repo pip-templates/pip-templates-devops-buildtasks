@@ -1,11 +1,5 @@
 #!/usr/bin/env pwsh
 
-param
-(
-    [Parameter(Mandatory=$false, Position=0)]
-    [string] $K8sNamespace
-)
-
 Set-StrictMode -Version latest
 $ErrorActionPreference = "Stop"
 
@@ -21,9 +15,10 @@ Write-Host "Rolling back microservice..."
 $component = Get-Content -Path "component.json" | ConvertFrom-Json
 
 # Rollback to previous state
-if ($K8sNamespace -ne $null) {
-    kubectl rollout undo deployment "$($component.name)-deploy" -n $K8sNamespace
-} else {
-    kubectl rollout undo deployment "$($component.name)-deploy"
+kubectl rollout undo deployment "$($component.name)-deploy"
+
+if ($LastExitCode -ne 0 ) {
+  exit 1
 }
+
 Write-Host "Microservice was successfully rolled back"

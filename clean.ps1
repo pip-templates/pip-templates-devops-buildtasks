@@ -20,5 +20,4 @@ docker ps -a | Select-String -Pattern "Exit" | foreach($_) { docker rm $_.ToStri
 # Remove temp deploy files
 Remove-Item -Force -ErrorAction SilentlyContinue "./tests_passed"
 Remove-Item -Force -ErrorAction SilentlyContinue "./$($component.name)-deploy.yml"
-Remove-Item -Force -ErrorAction SilentlyContinue "./$($component.name)-svc.yml"
 Remove-Item -Force -Recurse -ErrorAction SilentlyContinue "./tasks"
