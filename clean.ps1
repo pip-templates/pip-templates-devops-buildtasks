@@ -4,12 +4,12 @@
 $component = Get-Content -Path "component.json" | ConvertFrom-Json
 
 # Set variabled for requered image name and tags
-$rcImage="$($component.registry)/$($component.name):$($component.version)-$($component.build)-rc"
+$rcImage="$($component.registry)/$($component.name):$($component.version)-*-rc" # use * to cleanup previous images used in k8s
 $releaseImage="$($component.registry)/$($component.name):$($component.version)-$($component.build)"
 #$latestImage="$($component.registry)/$($component.name):latest"
 
 # Remove docker images
-docker rmi $rcImage --force
+docker rmi -f $(docker images $rcImage -q)
 docker rmi $releaseImage --force
 #docker rmi $latestImage --force
 docker image prune --force
